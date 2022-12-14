@@ -9,7 +9,6 @@ function factoryPlayer(name, number) {
 const player1 = factoryPlayer("Player", 1);
 const player2 = factoryPlayer("Player", 2);
 let turn = "x";
-const hello = "hi";
 
 const gameBoard = (() => {
 	const board = ["", "", "", "", "", "", "", "", ""];
@@ -25,12 +24,6 @@ function displayArray() {
 		cellToChange.textContent = element;
 	}
 }
-function checkX(sign) {
-	return sign === "x";
-}
-function checkO(sign) {
-	return sign === "o";
-}
 
 log(gameBoard.board);
 function checkWinner() {
@@ -44,6 +37,15 @@ function checkWinner() {
 		[0, 4, 8],
 		[2, 4, 6],
 	];
+	function checkX(sign) {
+		return sign === "x";
+	}
+	function checkO(sign) {
+		return sign === "o";
+	}
+
+	// Checks each array in combo's, changes each element to board[element]
+	// checks if every element in that array is === x or === o, if yes that is winner
 	for (let i = 0; i < winCombo.length; i += 1) {
 		winCombo[i].forEach((element, index) => {
 			winCombo[i][index] = gameBoard.board[element];
