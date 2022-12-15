@@ -30,7 +30,8 @@ function displayArray() {
 
 log(gameBoard.board);
 function checkWinner() {
-	// need to check for a draw, if array has no empty choices ""
+	let player1score = 0;
+	let player2score = 0;
 
 	// all winning combonations
 	const winCombo = [
@@ -64,10 +65,14 @@ function checkWinner() {
 
 		if (winCombo[i].every(checkX)) {
 			log(" X  WINNER");
+			player1score++;
+			document.getElementById("p1score").textContent = player1score;
 			return;
 		}
 		if (winCombo[i].every(checkO)) {
 			log("O WINNER");
+			player2score++;
+			document.getElementById("p2score").textContent = player2score;
 			return;
 		}
 	}
