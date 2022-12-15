@@ -36,6 +36,7 @@ function displayArray() {
 		cellToChange.textContent = element;
 	}
 }
+// resets out gameboard array and displays it
 function resetGame() {
 	gameBoard.board = ["", "", "", "", "", "", "", "", ""];
 	announceWinner.textContent = "";
@@ -50,7 +51,7 @@ function displayResults(roundWinner) {
 	const winner = roundWinner;
 	setTimeout(() => {
 		document.getElementById("roundWinner").style.display = "block";
-	}, 500);
+	}, 250);
 
 	if (winner === "x") {
 		player1score++;
@@ -104,13 +105,11 @@ function checkWinner() {
 		});
 
 		if (winCombo[i].every(checkX)) {
-			log(" X  WINNER");
 			disableClick();
 			displayResults("x");
 			return;
 		}
 		if (winCombo[i].every(checkO)) {
-			log("O WINNER");
 			disableClick();
 			displayResults("o");
 			return;
@@ -118,13 +117,10 @@ function checkWinner() {
 	}
 
 	if (gameBoard.board.every(checkTie)) {
-		log("tie");
 		displayResults("tie");
 		disableClick();
 	}
 }
-
-// resets out gameboard array and displays it
 
 // When a cell is clicked update the corresponding array index
 const cell = document.querySelectorAll(".cell");
