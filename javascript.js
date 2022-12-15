@@ -168,6 +168,15 @@ choice.forEach((choices) => {
 			return;
 		}
 		pve = false;
-		closeOverlay();
+		pvpInputs();
 	});
 });
+
+function pvpInputs() {
+	document.getElementById("pve").remove();
+	document.getElementById("pvp").style.marginTop = 0;
+	document.getElementById("initiate").style.gap = 0;
+
+	document.querySelector(".inputs").style.visibility = "visible";
+	document.getElementById("start").style.visibility = "visible";
+}

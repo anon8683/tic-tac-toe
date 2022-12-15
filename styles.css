@@ -74,10 +74,10 @@ main {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: var(--lSand);
 	padding: 25px;
 	border-radius: 5px;
 	color: rgb(243, 235, 17);
+	text-align: center;
 }
 
 #initiate {
@@ -100,10 +100,20 @@ main {
 
 #welcome,
 #pvp,
-#pve {
-	color: white;
+#pve,
+.input {
+	color: rgb(243, 235, 17);
 	text-align: center;
 	padding: 5px;
+}
+
+.inputs,
+#start {
+	visibility: hidden;
+}
+
+#start {
+	margin-top: 50px;
 }
 
 .choice {
