@@ -1,8 +1,9 @@
 /* eslint-disable no-plusplus */
 const { log } = console;
-const p1 = document.getElementById("p1");
-const p2 = document.getElementById("p2");
-
+const announceWinner = document.getElementById("roundWinner");
+const cells = document.querySelectorAll(".cell");
+let player1score = 0;
+let player2score = 0;
 function factoryPlayer(name, number) {
 	return {
 		name,
@@ -20,6 +21,13 @@ const gameBoard = (() => {
 	return { board };
 })();
 
+// Disables click on our cells
+function disableClick() {
+	cells.forEach((cell) => {
+		cell.classList.add("noClick");
+	});
+}
+
 function displayArray() {
 	// need to put our array items into corresponding dom elements
 	for (let index = 0; index < gameBoard.board.length; index += 1) {
@@ -28,12 +36,39 @@ function displayArray() {
 		cellToChange.textContent = element;
 	}
 }
+function resetGame() {
+	gameBoard.board = ["", "", "", "", "", "", "", "", ""];
+	announceWinner.textContent = "";
+	cells.forEach((cell) => {
+		cell.classList.remove("noClick");
+	});
+	displayArray();
+}
+function displayResults(roundWinner) {
+	const p1 = document.getElementById("p1score");
+	const p2 = document.getElementById("p2score");
+	const winner = roundWinner;
 
+	if (winner === "x") {
+		player1score++;
+		p1.textContent = player1score;
+		announceWinner.textContent = "Player 1 won that round!";
+	}
+	if (winner === "o") {
+		player2score++;
+		p2.textContent = player2score;
+		announceWinner.textContent = "Player 2 won that round!";
+	}
+	if (winner === "tie") {
+		announceWinner.textContent = "That was a draw";
+	}
+
+	setTimeout(() => {
+		resetGame();
+	}, 3000);
+}
 log(gameBoard.board);
 function checkWinner() {
-	let player1score = 0;
-	let player2score = 0;
-
 	// all winning combonations
 	const winCombo = [
 		[0, 1, 2],
@@ -66,27 +101,26 @@ function checkWinner() {
 
 		if (winCombo[i].every(checkX)) {
 			log(" X  WINNER");
-			player1score++;
-			document.getElementById("p1score").textContent = player1score;
+			disableClick();
+			displayResults("x");
 			return;
 		}
 		if (winCombo[i].every(checkO)) {
 			log("O WINNER");
-			player2score++;
-			document.getElementById("p2score").textContent = player2score;
+			disableClick();
+			displayResults("o");
 			return;
 		}
 	}
 
 	if (gameBoard.board.every(checkTie)) {
 		log("tie");
+		displayResults("tie");
+		disableClick();
 	}
 }
+
 // resets out gameboard array and displays it
-function resetGame() {
-	gameBoard.board = ["", "", "", "", "", "", "", "", ""];
-	displayArray();
-}
 
 // When a cell is clicked update the corresponding array index
 const cell = document.querySelectorAll(".cell");

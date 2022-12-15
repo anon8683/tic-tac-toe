@@ -107,6 +107,10 @@ p {
 	padding: 10px;
 }
 
+.noClick {
+	pointer-events: none;
+}
+
 [id="0"],
 [id="3"],
 [id="6"] {
