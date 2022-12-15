@@ -1,4 +1,7 @@
 const { log } = console;
+const p1 = document.getElementById("p1");
+const p2 = document.getElementById("p2");
+
 function factoryPlayer(name, number) {
 	return {
 		name,
@@ -27,6 +30,9 @@ function displayArray() {
 
 log(gameBoard.board);
 function checkWinner() {
+	// need to check for a draw, if array has no empty choices ""
+
+	// all winning combonations
 	const winCombo = [
 		[0, 1, 2],
 		[3, 4, 5],
@@ -37,11 +43,16 @@ function checkWinner() {
 		[0, 4, 8],
 		[2, 4, 6],
 	];
+
+	// functions to check every()
 	function checkX(sign) {
 		return sign === "x";
 	}
 	function checkO(sign) {
 		return sign === "o";
+	}
+	function checkTie(sign) {
+		return sign !== "";
 	}
 
 	// Checks each array in combo's, changes each element to board[element]
@@ -53,10 +64,16 @@ function checkWinner() {
 
 		if (winCombo[i].every(checkX)) {
 			log(" X  WINNER");
+			return;
 		}
 		if (winCombo[i].every(checkO)) {
 			log("O WINNER");
+			return;
 		}
+	}
+
+	if (gameBoard.board.every(checkTie)) {
+		log("tie");
 	}
 }
 
@@ -71,12 +88,16 @@ cell.forEach((box) => {
 		if (turn === "x") {
 			gameBoard.board.splice(+box.id, 1, turn);
 			turn = "o";
+			p1.classList.remove("active");
+			p2.classList.add("active");
 			displayArray();
 			checkWinner();
 			return;
 		}
 		gameBoard.board.splice(+box.id, 1, turn);
 		turn = "x";
+		p2.classList.remove("active");
+		p1.classList.add("active");
 		displayArray();
 		checkWinner();
 	});
