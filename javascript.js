@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 const { log } = console;
-const announceWinner = document.getElementById("roundWinner");
+const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
 let player1score = 0;
 let player2score = 0;
@@ -48,6 +48,9 @@ function displayResults(roundWinner) {
 	const p1 = document.getElementById("p1score");
 	const p2 = document.getElementById("p2score");
 	const winner = roundWinner;
+	setTimeout(() => {
+		document.getElementById("roundWinner").style.display = "block";
+	}, 500);
 
 	if (winner === "x") {
 		player1score++;
@@ -65,6 +68,7 @@ function displayResults(roundWinner) {
 
 	setTimeout(() => {
 		resetGame();
+		document.getElementById("roundWinner").style.display = "none";
 	}, 3000);
 }
 log(gameBoard.board);
