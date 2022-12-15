@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const { log } = console;
 const p1 = document.getElementById("p1");
 const p2 = document.getElementById("p2");
@@ -80,6 +81,11 @@ function checkWinner() {
 	if (gameBoard.board.every(checkTie)) {
 		log("tie");
 	}
+}
+// resets out gameboard array and displays it
+function resetGame() {
+	gameBoard.board = ["", "", "", "", "", "", "", "", ""];
+	displayArray();
 }
 
 // When a cell is clicked update the corresponding array index
