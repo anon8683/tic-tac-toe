@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
+let pve = false;
 let player1score = 0;
 let player2score = 0;
 function factoryPlayer(name, number) {
@@ -14,6 +16,7 @@ function factoryPlayer(name, number) {
 const player1 = factoryPlayer("Player", 1);
 const player2 = factoryPlayer("Player", 2);
 let turn = "x";
+const ai = false;
 
 const gameBoard = (() => {
 	const board = ["", "", "", "", "", "", "", "", ""];
@@ -50,7 +53,8 @@ function displayResults(roundWinner) {
 	const p2 = document.getElementById("p2score");
 	const winner = roundWinner;
 	setTimeout(() => {
-		document.getElementById("roundWinner").style.display = "block";
+		document.getElementById("roundWinner").style.opacity = 100;
+		document.getElementById("roundWinner").style.visibility = "visible";
 	}, 250);
 
 	if (winner === "x") {
@@ -69,8 +73,9 @@ function displayResults(roundWinner) {
 
 	setTimeout(() => {
 		resetGame();
-		document.getElementById("roundWinner").style.display = "none";
-	}, 3000);
+		document.getElementById("roundWinner").style.opacity = 0;
+		document.getElementById("roundWinner").style.visibility = "hidden";
+	}, 1500);
 }
 log(gameBoard.board);
 function checkWinner() {
@@ -125,7 +130,7 @@ function checkWinner() {
 // When a cell is clicked update the corresponding array index
 const cell = document.querySelectorAll(".cell");
 cell.forEach((box) => {
-	box.addEventListener("click", (e) => {
+	box.addEventListener("click", () => {
 		if (gameBoard.board[+box.id] !== "") {
 			return;
 		}
@@ -145,5 +150,24 @@ cell.forEach((box) => {
 		p1.classList.add("active");
 		displayArray();
 		checkWinner();
+	});
+});
+
+function closeOverlay() {
+	const overlay = document.getElementById("overlay");
+	overlay.style.opacity = 0;
+	overlay.style.visibility = "hidden";
+}
+
+const choice = document.querySelectorAll(".choice");
+choice.forEach((choices) => {
+	choices.addEventListener("click", () => {
+		if (choice.id === "pve") {
+			pve = true;
+			closeOverlay();
+			return;
+		}
+		pve = false;
+		closeOverlay();
 	});
 });

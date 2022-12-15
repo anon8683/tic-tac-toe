@@ -32,7 +32,8 @@ main {
 
 #roundWinner {
 	position: fixed;
-	display: none;
+	opacity: 0;
+	visibility: hidden;
 	width: 100%;
 	height: 100%;
 	top: 0;
@@ -42,6 +43,21 @@ main {
 	background-color: rgba(0, 0, 0, 0.75);
 	z-index: 2;
 	transition: 1s;
+}
+
+#overlay {
+	position: fixed;
+	opacity: 100;
+	visibility: visible;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.85);
+	z-index: 2;
+	transition: 0.75s;
 }
 
 #gameWinner {
@@ -58,12 +74,47 @@ main {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	text-align: center;
 	background-color: var(--lSand);
 	padding: 25px;
 	border-radius: 5px;
-
 	color: rgb(243, 235, 17);
+}
+
+#initiate {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+	width: 500px;
+	height: 500px;
+	position: absolute;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#welcome,
+#pvp,
+#pve {
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+.choice {
+	border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.choice:hover {
+	border: 1px solid white;
+	border-color: white;
+	background-color: rgb(13, 58, 96);
+	cursor: pointer;
 }
 
 #game {
@@ -80,7 +131,7 @@ main {
 
 .cell {
 	height: 12.5vw;
-	border: 3px solid black;
+	border: 3px solid rgba(0, 0, 0, 0.718);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -176,5 +227,9 @@ p {
 		height: 30vw;
 		font-size: 20vw;
 		padding-bottom: 0;
+	}
+	#initiate {
+		width: 300px;
+		height: 550px;
 	}
 }
