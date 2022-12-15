@@ -82,6 +82,7 @@ main {
 
 #initiate {
 	display: flex;
+
 	flex-direction: column;
 	gap: 50px;
 	width: 500px;
@@ -96,6 +97,7 @@ main {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	transition: 0.55s;
 }
 
 #welcome,
@@ -109,11 +111,38 @@ main {
 
 .inputs,
 #start {
-	visibility: hidden;
+	opacity: 0;
+}
+
+input {
+}
+
+.inputs {
+	background-color: rgb(13, 58, 96);
+	border: 1px solid white;
+	padding: 10px;
+}
+
+.choiceActive {
+	background-color: rgb(13, 58, 96);
+	border: 1px solid white;
+	padding: 10px;
 }
 
 #start {
 	margin-top: 50px;
+	width: 150px;
+	height: 50px;
+	border-radius: 5px;
+}
+
+#start:hover {
+	background-color: rgb(176, 212, 244);
+	cursor: pointer;
+	border: 1px solid white;
+}
+#start:active {
+	transform: translateY(2px);
 }
 
 .choice {
@@ -154,7 +183,7 @@ main {
 	cursor: pointer;
 	scale: 1.01;
 	box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.21);
-	background-color: aliceblue;
+	background-color: rgb(195, 222, 245);
 }
 
 p {

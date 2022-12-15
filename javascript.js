@@ -3,7 +3,8 @@
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
-let pve = false;
+
+let ai = false;
 let player1score = 0;
 let player2score = 0;
 function factoryPlayer(name, number) {
@@ -16,7 +17,6 @@ function factoryPlayer(name, number) {
 const player1 = factoryPlayer("Player", 1);
 const player2 = factoryPlayer("Player", 2);
 let turn = "x";
-const ai = false;
 
 const gameBoard = (() => {
 	const board = ["", "", "", "", "", "", "", "", ""];
@@ -142,8 +142,15 @@ cell.forEach((box) => {
 			p2.classList.add("active");
 			displayArray();
 			checkWinner();
+			if (ai === true) {
+				setTimeout(() => {
+					aiTurn();
+					turn = "x";
+				}, 500);
+			}
 			return;
 		}
+
 		gameBoard.board.splice(+box.id, 1, turn);
 		turn = "x";
 		p2.classList.remove("active");
@@ -162,21 +169,51 @@ function closeOverlay() {
 const choice = document.querySelectorAll(".choice");
 choice.forEach((choices) => {
 	choices.addEventListener("click", () => {
-		if (choice.id === "pve") {
-			pve = true;
+		if (choices.id === "pve") {
+			ai = true;
 			closeOverlay();
 			return;
 		}
-		pve = false;
+		ai = false;
 		pvpInputs();
 	});
 });
 
 function pvpInputs() {
-	document.getElementById("pve").remove();
-	document.getElementById("pvp").style.marginTop = 0;
+	const pvp = document.getElementById("pvp");
+
+	if (document.getElementById("pve") !== null) {
+		document.getElementById("pve").remove();
+	}
+	pvp.classList.remove("choice");
+	pvp.classList.add("choiceActive");
+	pvp.style.marginTop = 0;
 	document.getElementById("initiate").style.gap = 0;
 
-	document.querySelector(".inputs").style.visibility = "visible";
-	document.getElementById("start").style.visibility = "visible";
+	document.querySelector(".inputs").style.opacity = 100;
+	document.getElementById("start").style.opacity = 100;
+}
+// how to code the ai
+// first determine if the user wants to play vs ai -- done
+// after user turn, switch to ai turn
+// have ai pick a random free spot
+
+function aiTurn() {
+	const freeIndex = [];
+	for (let i = 0; i < gameBoard.board.length; i++) {
+		if (gameBoard.board[i] === "") freeIndex.push(i);
+	}
+
+	const randomNumber = Math.floor(Math.random() * freeIndex.length);
+	const aiChoice = freeIndex[randomNumber];
+	if (freeIndex.length === 0) {
+		return;
+	}
+
+	gameBoard.board.splice(aiChoice, 1, turn);
+	checkWinner();
+	displayArray();
+	log(freeIndex);
+	log(randomNumber);
+	log(aiChoice);
 }
