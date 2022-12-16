@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
+
 // eslint-disable-next-line no-unused-vars
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
@@ -25,9 +26,24 @@ function smarter() {
 			element.includes("")
 		) {
 			const smartMoveIndex = element.indexOf("");
-			const smartestMove = realCombo[i][smartMoveIndex];
+			const winningMove = realCombo[i][smartMoveIndex];
 
-			return smartestMove;
+			return winningMove;
+		}
+	}
+}
+
+function evenSmarter() {
+	for (let i = 0; i < winCombs.length; i++) {
+		const element = winCombs[i];
+		if (
+			element.indexOf("x") !== element.lastIndexOf("x") &&
+			element.includes("")
+		) {
+			const smartMoveIndex = element.indexOf("");
+			const blockWin = realCombo[i][smartMoveIndex];
+
+			return blockWin;
 		}
 	}
 }
@@ -177,7 +193,7 @@ function aiTurn() {
 		return;
 	}
 
-	if (smarter() === undefined) {
+	if (smarter() === undefined && evenSmarter() === undefined) {
 		aiRandomMove();
 		return;
 	}
@@ -187,6 +203,13 @@ function aiTurn() {
 		displayArray();
 		return;
 	}
+	if (gameBoard.board[evenSmarter()] === "") {
+		gameBoard.board.splice(evenSmarter(), 1, turn);
+		checkWinner();
+		displayArray();
+		return;
+	}
+
 	aiRandomMove();
 	turn = "x";
 }
@@ -242,17 +265,6 @@ cell.forEach((box) => {
 			}
 			return;
 		}
-
-		// if (ai === true && turn === "o") {
-		// 	setTimeout(() => {
-		// 		aiTurn();
-		// 		turn = "x";
-		// 		p2.classList.remove("active");
-		// 		p1.classList.add("active");
-		// 	}, 100);
-		// }
-		// since after the first move, turn has beens set to "o", first block is ignored
-		// "o" can place their turn and switch turn back to X
 		gameBoard.board.splice(+box.id, 1, turn);
 		turn = "x";
 		p2.classList.remove("active");
