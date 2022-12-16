@@ -177,16 +177,20 @@ function aiTurn() {
 	// 	}
 	// }
 
-	if (
-		gameBoard.board.includes("o") &&
-		gameBoard.board.indexOf("o") !== gameBoard.board.lastIndexOf("o")
-	) {
+	if (smarter() === undefined) {
+		aiRandomMove();
+		return;
+	}
+	if (gameBoard.board[smarter()] === "") {
 		gameBoard.board.splice(smarter(), 1, turn);
 		checkWinner();
 		displayArray();
 		return;
 	}
+	aiRandomMove();
+}
 
+function aiRandomMove() {
 	const freeIndex = [];
 	for (let i = 0; i < gameBoard.board.length; i++) {
 		if (gameBoard.board[i] === "") freeIndex.push(i);
@@ -197,9 +201,6 @@ function aiTurn() {
 	if (freeIndex.length === 0) {
 		return;
 	}
-
-	// adjust board array with our random choice
-	// check for win and display array
 
 	gameBoard.board.splice(aiChoice, 1, turn);
 	checkWinner();
