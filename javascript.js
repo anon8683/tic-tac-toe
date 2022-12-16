@@ -5,6 +5,7 @@ const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
 let winCombs = [[]];
+let winner = false;
 const realCombo = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -70,6 +71,12 @@ function displayArray() {
 // allows for cells to be clicked again by removing noClick class
 function resetGame() {
 	gameBoard.board = ["", "", "", "", "", "", "", "", ""];
+	winner = false;
+	if (turn === "o" && ai === true) {
+		aiTurn();
+		turn = "x";
+	}
+
 	cells.forEach((cell) => {
 		cell.classList.remove("noClick");
 	});
@@ -146,12 +153,14 @@ function checkWinner() {
 		if (winCombo[i].every(checkX)) {
 			disableClick();
 			displayResults("x");
+			winner = true;
 
 			return;
 		}
 		if (winCombo[i].every(checkO)) {
 			disableClick();
 			displayResults("o");
+			winner = true;
 			return;
 		}
 	}
@@ -159,23 +168,14 @@ function checkWinner() {
 	if (gameBoard.board.every(checkTie)) {
 		displayResults("tie");
 		disableClick();
+		winner = true;
 	}
 	winCombs = winCombo;
 }
 function aiTurn() {
-	// ai has to determine what indexes of the board array have not been filled with an X or O
-	// iterate through each element in board array, if it contains an empty string ""
-	// then push that index (i) to our new array
-	// if (gameBoard.board.includes("o")) {
-	// 	const indexO = gameBoard.board.indexOf("o");
-	// 	if (gameBoard.board[indexO - 1] === "") {
-	// 		const smarterChoice = indexO - 1;
-	// 		gameBoard.board.splice(smarterChoice, 1, turn);
-	// 		checkWinner();
-	// 		displayArray();
-	// 		return;
-	// 	}
-	// }
+	if (winner === true) {
+		return;
+	}
 
 	if (smarter() === undefined) {
 		aiRandomMove();
@@ -188,6 +188,7 @@ function aiTurn() {
 		return;
 	}
 	aiRandomMove();
+	turn = "x";
 }
 
 function aiRandomMove() {
@@ -228,14 +229,28 @@ cell.forEach((box) => {
 			p2.classList.add("active");
 			displayArray();
 			checkWinner();
+			if (winner === true) {
+				return;
+			}
 			if (ai === true) {
 				setTimeout(() => {
 					aiTurn();
 					turn = "x";
+					p2.classList.remove("active");
+					p1.classList.add("active");
 				}, 100);
 			}
 			return;
 		}
+
+		// if (ai === true && turn === "o") {
+		// 	setTimeout(() => {
+		// 		aiTurn();
+		// 		turn = "x";
+		// 		p2.classList.remove("active");
+		// 		p1.classList.add("active");
+		// 	}, 100);
+		// }
 		// since after the first move, turn has beens set to "o", first block is ignored
 		// "o" can place their turn and switch turn back to X
 		gameBoard.board.splice(+box.id, 1, turn);
