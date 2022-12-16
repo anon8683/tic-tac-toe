@@ -1,8 +1,35 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
+// eslint-disable-next-line no-unused-vars
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
+let winCombs = [[]];
+const realCombo = [
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[2, 4, 6],
+];
+
+function smarter() {
+	for (let i = 0; i < winCombs.length; i++) {
+		const element = winCombs[i];
+		if (
+			element.indexOf("o") !== element.lastIndexOf("o") &&
+			element.includes("")
+		) {
+			const smartMoveIndex = element.indexOf("");
+			const smartestMove = realCombo[i][smartMoveIndex];
+
+			return smartestMove;
+		}
+	}
+}
 
 let player1score = 0;
 let player2score = 0;
@@ -119,6 +146,7 @@ function checkWinner() {
 		if (winCombo[i].every(checkX)) {
 			disableClick();
 			displayResults("x");
+
 			return;
 		}
 		if (winCombo[i].every(checkO)) {
@@ -132,19 +160,38 @@ function checkWinner() {
 		displayResults("tie");
 		disableClick();
 	}
+	winCombs = winCombo;
 }
 function aiTurn() {
 	// ai has to determine what indexes of the board array have not been filled with an X or O
 	// iterate through each element in board array, if it contains an empty string ""
 	// then push that index (i) to our new array
+	// if (gameBoard.board.includes("o")) {
+	// 	const indexO = gameBoard.board.indexOf("o");
+	// 	if (gameBoard.board[indexO - 1] === "") {
+	// 		const smarterChoice = indexO - 1;
+	// 		gameBoard.board.splice(smarterChoice, 1, turn);
+	// 		checkWinner();
+	// 		displayArray();
+	// 		return;
+	// 	}
+	// }
+
+	if (
+		gameBoard.board.includes("o") &&
+		gameBoard.board.indexOf("o") !== gameBoard.board.lastIndexOf("o")
+	) {
+		gameBoard.board.splice(smarter(), 1, turn);
+		checkWinner();
+		displayArray();
+		return;
+	}
+
 	const freeIndex = [];
 	for (let i = 0; i < gameBoard.board.length; i++) {
 		if (gameBoard.board[i] === "") freeIndex.push(i);
 	}
 
-	// once we have our array of free spaces, pick a random number
-	// aiChoice becomes a randomly picked index of .board (that is empty)
-	// if freeIndex is empty, there are no spaces on the board
 	const randomNumber = Math.floor(Math.random() * freeIndex.length);
 	const aiChoice = freeIndex[randomNumber];
 	if (freeIndex.length === 0) {
