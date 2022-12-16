@@ -1,21 +1,34 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
+let playerName1;
+let playerName2;
+
+function startPvp() {
+	const input1 = document.getElementById("playerInput1");
+	const input2 = document.getElementById("playerInput2");
+	const name1 = document.getElementById("p1");
+	const name2 = document.getElementById("p2");
+
+	name1.textContent = input1.value;
+	name2.textContent = input2.value;
+
+	closeOverlay();
+}
 
 let ai = false;
 let player1score = 0;
 let player2score = 0;
-function factoryPlayer(name, number) {
-	return {
-		name,
-		number,
-	};
-}
+// function factoryPlayer(name, number) {
+// 	return {
+// 		name,
+// 		number,
+// 	};
+// }
 
-const player1 = factoryPlayer("Player", 1);
-const player2 = factoryPlayer("Player", 2);
 let turn = "x";
 
 const gameBoard = (() => {
@@ -126,6 +139,25 @@ function checkWinner() {
 		disableClick();
 	}
 }
+function aiTurn() {
+	const freeIndex = [];
+	for (let i = 0; i < gameBoard.board.length; i++) {
+		if (gameBoard.board[i] === "") freeIndex.push(i);
+	}
+
+	const randomNumber = Math.floor(Math.random() * freeIndex.length);
+	const aiChoice = freeIndex[randomNumber];
+	if (freeIndex.length === 0) {
+		return;
+	}
+
+	gameBoard.board.splice(aiChoice, 1, turn);
+	checkWinner();
+	displayArray();
+	log(freeIndex);
+	log(randomNumber);
+	log(aiChoice);
+}
 
 // When a cell is clicked update the corresponding array index
 const cell = document.querySelectorAll(".cell");
@@ -146,7 +178,7 @@ cell.forEach((box) => {
 				setTimeout(() => {
 					aiTurn();
 					turn = "x";
-				}, 500);
+				}, 100);
 			}
 			return;
 		}
@@ -165,20 +197,6 @@ function closeOverlay() {
 	overlay.style.opacity = 0;
 	overlay.style.visibility = "hidden";
 }
-
-const choice = document.querySelectorAll(".choice");
-choice.forEach((choices) => {
-	choices.addEventListener("click", () => {
-		if (choices.id === "pve") {
-			ai = true;
-			closeOverlay();
-			return;
-		}
-		ai = false;
-		pvpInputs();
-	});
-});
-
 function pvpInputs() {
 	const pvp = document.getElementById("pvp");
 
@@ -193,27 +211,14 @@ function pvpInputs() {
 	document.querySelector(".inputs").style.opacity = 100;
 	document.getElementById("start").style.opacity = 100;
 }
-// how to code the ai
-// first determine if the user wants to play vs ai -- done
-// after user turn, switch to ai turn
-// have ai pick a random free spot
-
-function aiTurn() {
-	const freeIndex = [];
-	for (let i = 0; i < gameBoard.board.length; i++) {
-		if (gameBoard.board[i] === "") freeIndex.push(i);
-	}
-
-	const randomNumber = Math.floor(Math.random() * freeIndex.length);
-	const aiChoice = freeIndex[randomNumber];
-	if (freeIndex.length === 0) {
-		return;
-	}
-
-	gameBoard.board.splice(aiChoice, 1, turn);
-	checkWinner();
-	displayArray();
-	log(freeIndex);
-	log(randomNumber);
-	log(aiChoice);
-}
+const choice = document.querySelectorAll(".choice");
+choice.forEach((choices) => {
+	choices.addEventListener("click", () => {
+		if (choices.id === "pve") {
+			ai = true;
+			closeOverlay();
+			return;
+		}
+		pvpInputs();
+	});
+});
