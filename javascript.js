@@ -220,6 +220,16 @@ function aiRandomMove() {
 		if (gameBoard.board[i] === "") freeIndex.push(i);
 	}
 
+	if (freeIndex.length === 9) {
+		const corners = [0, 2, 6, 8];
+		const randomNum = Math.floor(Math.random() * corners.length);
+		const randomCorner = corners[randomNum];
+		gameBoard.board.splice(randomCorner, 1, turn);
+		checkWinner();
+		displayArray();
+		return;
+	}
+
 	const randomNumber = Math.floor(Math.random() * freeIndex.length);
 	const aiChoice = freeIndex[randomNumber];
 	if (freeIndex.length === 0) {
@@ -280,11 +290,6 @@ function closeOverlay() {
 	overlay.style.opacity = 0;
 	overlay.style.visibility = "hidden";
 }
-
-// when start game button is clicked after selecting pvp
-// adjust player names based on input form values
-// if nothing inputed, default player1/2
-// close the overlay to allow the game to start
 
 // it' called on button click, ignore eslint
 // eslint-disable-next-line no-unused-vars
