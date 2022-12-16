@@ -1,33 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
 const { log } = console;
 const announceWinner = document.getElementById("gameWinner");
 const cells = document.querySelectorAll(".cell");
-let playerName1;
-let playerName2;
-
-function startPvp() {
-	const input1 = document.getElementById("playerInput1");
-	const input2 = document.getElementById("playerInput2");
-	const name1 = document.getElementById("p1");
-	const name2 = document.getElementById("p2");
-
-	name1.textContent = input1.value;
-	name2.textContent = input2.value;
-
-	closeOverlay();
-}
 
 let ai = false;
 let player1score = 0;
 let player2score = 0;
-// function factoryPlayer(name, number) {
-// 	return {
-// 		name,
-// 		number,
-// 	};
-// }
 
 let turn = "x";
 
@@ -197,6 +175,27 @@ function closeOverlay() {
 	overlay.style.opacity = 0;
 	overlay.style.visibility = "hidden";
 }
+
+// it' called on button click, ignore eslint
+// eslint-disable-next-line no-unused-vars
+function startPvp() {
+	const input1 = document.getElementById("playerInput1");
+	const input2 = document.getElementById("playerInput2");
+	const name1 = document.getElementById("p1");
+	const name2 = document.getElementById("p2");
+
+	name1.textContent = input1.value;
+	name2.textContent = input2.value;
+
+	if (input1.value === "") {
+		name1.textContent = "Player 1";
+	}
+	if (input2.value === "") {
+		name2.textContent = "Player 2";
+	}
+
+	closeOverlay();
+}
 function pvpInputs() {
 	const pvp = document.getElementById("pvp");
 
@@ -216,6 +215,8 @@ choice.forEach((choices) => {
 	choices.addEventListener("click", () => {
 		if (choices.id === "pve") {
 			ai = true;
+			document.getElementById("p2").textContent = "Computer";
+			document.getElementById("p1").textContent = "You";
 			closeOverlay();
 			return;
 		}
